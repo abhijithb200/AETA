@@ -9,5 +9,7 @@ for i in "${needed_package[@]}"
 do
 	status="$(dpkg-query -l $i  2>&1)";
 	flag="$(echo $status | grep "no packages found")";
-       		
+	if [[ `echo $status | grep "no packages found"` ]];then
+		echo $i		       		
+	fi
 done
