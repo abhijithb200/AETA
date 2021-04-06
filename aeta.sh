@@ -4,6 +4,7 @@ needed_package=(
 	"dnsspoof"
 	"apache2"
 	)
+not_installed=()
 installs=false
 
 RED='\033[0;31m'
@@ -29,9 +30,18 @@ do
 	status="$(dpkg-query -l $i  2>&1)";
 	flag="$(echo $status | grep "no packages found")";
 	if [[ `echo $status | grep "no packages found"` ]];then
-		echo -e  "   ${RED}not installed${NC}"		       		
+		echo -e  "   ${RED}not installed${NC}"
+		not_installed+=($i)		       		
 	else
 		echo -e "    ${GREEN}installed${NC}"
 	fi
-	sleep 3
+	sleep 0.5
 done
+
+
+echo -e "INSTALLING THE PACKEGES"
+for i in "${not_installed[@]}"
+do
+	sudo apt-get install $i
+done
+echo "completed"
