@@ -77,9 +77,41 @@ function find_interface(){
 	fi
 }
 
+#collect ssid from user
+function get_ssid(){
+
+echo -e
+echo -e
+echo -e
+echo -e "Enter the ssid :"
+read ssid;
+}
+#making hostap.conf
+#_____________________________________________
+
+function hostapd_conf(){
+	if [[ -f "hostapd.conf" ]]
+	then
+		sudo rm "hostapd.conf"
+		hostapd_conf
+	else
+		sudo touch hostapd.conf;
+		echo -e "interface=${interface}" >> hostapd.conf;
+		echo -e "ssid=${ssid}" >> hostapd.conf;
+		echo -e "hw_mode=g" >> hostapd.conf;
+		echo -e "channel=6" >> hostapd.conf;
+		echo -e "macaddr_acl=0" >> hostapd.conf;
+		echo -e "auth_algs=1" >> hostapd.conf;
+		echo -e "ignore_broadcast_ssid=0" >> hostapd.conf;
+		echo -e "hostapd.conf file ${GREEN}created${NC}"
+		read -p "Press enter to continue"
+	fi
+}
+
+
 find_interface;
 echo "The selected interface is ${interface}"
+get_ssid;
+hostapd_conf;
 
 
-#______________________________________________________
-#making hostapd.conf
