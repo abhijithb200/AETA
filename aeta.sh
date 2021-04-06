@@ -108,10 +108,32 @@ function hostapd_conf(){
 	fi
 }
 
+#making dnsmasq.conf file
+function dnsmasq_conf(){
+	if [[ -f dnsmasq.conf ]]
+	then
+		sudo rm "dnsmasq.conf"
+		dnsmasq_conf
+	else
+		sudo touch dnsmasq.conf;
+		echo -e "interface=${interface}" >> dnsmasq.conf
+		echo  -e "dhcp-range=10.0.0.10,10.0.0.250,255.255.255.0,12h" >> dnsmasq.conf
+		echo -e "dhcp-option=3,10.0.0.1" >> dnsmasq.conf
+		echo -e "dhcp-option=6,10.0.0.1" >> dnsmasq.conf
+		echo -e "server=8.8.8.8" >> dnsmasq.conf
+		echo -e "log-queries" >> dnsmasq.conf
+		echo -e "listen-address=127.0.0.1" >> dnsmasq.conf
+		echo -e "dnsmasq.conf file ${GREEN}created${NC}"
+		read -p "Press enter to continue"
+	fi
+} 
+
+
+ 
 
 find_interface;
 echo "The selected interface is ${interface}"
 get_ssid;
 hostapd_conf;
-
+dnsmasq_conf;
 
