@@ -1,3 +1,4 @@
+#initialization
 needed_package=(
 	"hostapd"
 	"dsniff"
@@ -5,11 +6,15 @@ needed_package=(
 	"apache2"
 	)
 not_installed=()
-installs=false
 
+
+#colours
 RED='\033[0;31m'
 NC='\033[0m'
 GREEN='\033[0;32m'
+
+
+
 echo -e "\t \t \tthis is ${RED}AETA${NC}"
 echo -e
 echo -e
@@ -38,7 +43,7 @@ do
 	sleep 0.5
 done
 
-if [ ${#not_installed[@]} ];then
+if [ ${#not_installed[@]} -gt 0 ];then
 	echo -e "INSTALLING THE PACKEGES"
 	for i in "${not_installed[@]}"
 	do
@@ -47,3 +52,34 @@ if [ ${#not_installed[@]} ];then
 	echo "Installation Completed"
 	tput reset
 fi
+
+function find_interface(){
+	interface_list=();
+	for i in $(ifconfig | cut -d ' ' -f1| tr ':' '\n' | awk NF)
+	do
+		interface_list+=("$i")
+	done
+	echo -e "AVAILABLE INTERFACES:"
+	declare -i count=0;
+	for i in "${interface_list[@]}"
+	do
+		echo -e "$count.  $i";
+		count+=1;
+	done
+	echo -e "Select the interface number you want to select";
+	read number
+	if [ $number -gt ${#interface_list[@]} ];then
+		echo -e  "${RED}ERROR${NC}";
+		echo -e "The input must be in the range";
+		find_interface
+	else
+		interface="${interface_list[$number]}"
+	fi
+}
+
+find_interface;
+echo "The selected interface is ${interface}"
+
+
+#______________________________________________________
+#making hostapd.conf
