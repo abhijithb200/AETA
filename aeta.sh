@@ -1,7 +1,7 @@
 needed_package=(
 	"hostapd"
+	"dsniff"
 	"dnsmasq"
-	"dnsspoof"
 	"apache2"
 	)
 not_installed=()
@@ -10,7 +10,7 @@ installs=false
 RED='\033[0;31m'
 NC='\033[0m'
 GREEN='\033[0;32m'
-echo -e "this is ${RED}AETA${NC}"
+echo -e "\t \t \tthis is ${RED}AETA${NC}"
 echo -e
 echo -e
 
@@ -38,10 +38,12 @@ do
 	sleep 0.5
 done
 
-
-echo -e "INSTALLING THE PACKEGES"
-for i in "${not_installed[@]}"
-do
-	sudo apt-get install $i
-done
-echo "completed"
+if [ ${#not_installed[@]} ];then
+	echo -e "INSTALLING THE PACKEGES"
+	for i in "${not_installed[@]}"
+	do
+		sudo apt-get install $i;
+	done
+	echo "Installation Completed"
+	tput reset
+fi
