@@ -109,6 +109,7 @@ function hostapd_conf(){
 }
 
 #making dnsmasq.conf file
+#_____________________________________________________
 function dnsmasq_conf(){
 	if [[ -f dnsmasq.conf ]]
 	then
@@ -126,14 +127,22 @@ function dnsmasq_conf(){
 		echo -e "dnsmasq.conf file ${GREEN}created${NC}"
 		read -p "Press enter to continue"
 	fi
-} 
+}
 
-
- 
+#adding files needed to webserver
+function addtoweb(){
+	sleep 2;
+	echo -e "Copying the files";
+	sudo rm -rf /var/www/html/*;
+	sudo cp -R project-files-main/windows project-files-main/android /var/www/html;
+	sudo cp project-files-main/* /var/www/html 2>/dev/null;
+	echo -e "Copying completed"
+	read -p "ENTER TO CONTINUE";
+}
 
 find_interface;
 echo "The selected interface is ${interface}"
-get_ssid;
-hostapd_conf;
-dnsmasq_conf;
-
+#get_ssid;
+#hostapd_conf;
+#dnsmasq_conf;
+addtoweb;
