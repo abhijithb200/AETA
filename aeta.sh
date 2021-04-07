@@ -140,9 +140,30 @@ function addtoweb(){
 	read -p "ENTER TO CONTINUE";
 }
 
-find_interface;
+#adding android conf files
+function android_conf(){
+	if [[ -f /etc/apache2/sites-enabled/android.conf ]];
+	then
+		echo "file found"
+	else
+		touch /etc/apache2/sites-enabled/android.conf;
+		echo -e "<VirtualHost *:80>" >> /etc/apache2/sites-enabled/android.conf
+		echo -e "Servername connectivitycheck.gstatic.com" >> /etc/apache2/sites-enabled/android.conf 
+		echo -e "ServerAdmin webmaster@localhost" >> /etc/apache2/sites-enabled/android.conf 
+		echo -e "DocumentRoot /var/www/html/android" >> /etc/apache2/sites-enabled/android.conf 
+		echo -e "RedirectMatch 302 /generate_204 /index.html" >> /etc/apache2/sites-enabled/android.conf 
+		echo -e "ErrorLog\${APACHE_LOG_DIR}/android_error.log" >> /etc/apache2/sites-enabled/android.conf 
+		echo -e "CustomLog\${APACHE_LOG_DIR}/android_access.log combined" >> /etc/apache2/sites-enabled/android.conf 
+		echo -e "</VirtualHost>" >> /etc/apache2/sites-enabled/android.conf 
+		sleep 2;
+		echo -e "Configuration files are set";
+		read -p "Enter to continue";
+	fi
+}
+#find_interface;
 echo "The selected interface is ${interface}"
 #get_ssid;
 #hostapd_conf;
 #dnsmasq_conf;
-addtoweb;
+#addtoweb;
+android_conf;
