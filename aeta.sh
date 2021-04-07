@@ -160,10 +160,25 @@ function android_conf(){
 		read -p "Enter to continue";
 	fi
 }
+
+
+function final_conf(){
+	#disconnect from network
+	tput reset
+	echo -e "Attempting to disconnect from the network";
+	sudo nmcli d disconnect wlan0;
+	sleep 2;
+	
+	   
+}
+
+
+
 #find_interface;
 echo "The selected interface is ${interface}"
 #get_ssid;
 #hostapd_conf;
 #dnsmasq_conf;
 #addtoweb;
-android_conf;
+#android_conf;
+final_conf;
