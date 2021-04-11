@@ -167,14 +167,14 @@ function final_conf(){
 	tput reset
 	echo -e "Attempting to disconnect from the network";
 	sudo nmcli d disconnect wlan0;
+	killall NerworkManager;
 	sleep 2;
-	xterm -e /bin/bash -l -c "hostapd hostapd.conf";
-	sudo ifconfig wlan0 10.0.0.1;
-	xterm -e /bin/bash -l -c "dnsmasq -C dnsmasq.conf -d";
+	xterm -e /bin/bash -l -c "hostapd hostapd.conf" &
+	sudo ifconfig wlan0 10.0.0.1; 
+	xterm -e /bin/bash -l -c "dnsmasq -C dnsmasq.conf -d" &
 	echo 0 > /proc/sys/net/ipv4/ip_forward;
 	service apache2 restart;
-	xterm -e /bin/bash -l -c "dnsspoof -i wlan0";	
-	   
+	xterm -e /bin/bash -l -c "dnsspoof -i wlan0" &
 }
 
 
