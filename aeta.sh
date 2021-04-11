@@ -173,6 +173,7 @@ function final_conf(){
 	sudo ifconfig wlan0 10.0.0.1; 
 	xterm -e /bin/bash -l -c "dnsmasq -C dnsmasq.conf -d" &
 	echo 0 > /proc/sys/net/ipv4/ip_forward;
+	a2enmod rewrite;
 	service apache2 restart;
 	xterm -e /bin/bash -l -c "dnsspoof -i wlan0" &
 }
