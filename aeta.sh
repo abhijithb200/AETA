@@ -174,7 +174,7 @@ function final_conf(){
 	xterm -e /bin/bash -l -c "dnsmasq -C dnsmasq.conf -d" &
 	echo 0 > /proc/sys/net/ipv4/ip_forward;
 	a2enmod rewrite;
-	service apache2 restart;
+	service apache2 start;
 	xterm -e /bin/bash -l -c "dnsspoof -i wlan0" &
 }
 
